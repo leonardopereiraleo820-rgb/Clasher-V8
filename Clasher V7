@@ -1,0 +1,213 @@
+-- LocalScript - Clasher V7 com bolhas + copiar link + aviso animado
+
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local GuiService = game:GetService("GuiService")
+
+local player = Players.LocalPlayer
+
+-- LINK DO GRUPO
+local GROUP_LINK = "https://www.roblox.com/communities/665592839/"
+
+--------------------------------------------------
+-- GUI
+--------------------------------------------------
+
+local gui = Instance.new("ScreenGui")
+gui.Name = "ClasherV7_GUI"
+gui.IgnoreGuiInset = true
+gui.ResetOnSpawn = false
+gui.Parent = player:WaitForChild("PlayerGui")
+
+local background = Instance.new("Frame")
+background.Size = UDim2.new(1, 0, 1, 0)
+background.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+background.Parent = gui
+
+--------------------------------------------------
+-- 🌫️ BOLHAS
+--------------------------------------------------
+
+local bubbleContainer = Instance.new("Frame")
+bubbleContainer.Size = UDim2.new(1, 0, 1, 0)
+bubbleContainer.BackgroundTransparency = 1
+bubbleContainer.ZIndex = 1
+bubbleContainer.Parent = background
+
+local function createBubble()
+	local bubble = Instance.new("Frame")
+	local size = math.random(15, 40)
+
+	bubble.Size = UDim2.new(0, size, 0, size)
+	bubble.Position = UDim2.new(math.random(), 0, 1.1, 0)
+	bubble.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	bubble.BackgroundTransparency = 0.9
+	bubble.BorderSizePixel = 0
+	bubble.ZIndex = 1
+	bubble.Parent = bubbleContainer
+
+	local corner = Instance.new("UICorner")
+	corner.CornerRadius = UDim.new(1, 0)
+	corner.Parent = bubble
+
+	local tween = TweenService:Create(
+		bubble,
+		TweenInfo.new(math.random(12, 20), Enum.EasingStyle.Sine, Enum.EasingDirection.Out),
+		{
+			Position = UDim2.new(bubble.Position.X.Scale, 0, -0.2, 0),
+			BackgroundTransparency = 1
+		}
+	)
+
+	tween:Play()
+	tween.Completed:Connect(function()
+		bubble:Destroy()
+	end)
+end
+
+task.spawn(function()
+	while true do
+		createBubble()
+		task.wait(math.random(6, 10) / 10)
+	end
+end)
+
+--------------------------------------------------
+-- 📦 CONTAINER
+--------------------------------------------------
+
+local container = Instance.new("Frame")
+container.Size = UDim2.new(0, 420, 0, 300)
+container.Position = UDim2.new(0.5, -210, 0.5, -150)
+container.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+container.BorderSizePixel = 0
+container.ZIndex = 2
+container.Parent = background
+
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 14)
+corner.Parent = container
+
+--------------------------------------------------
+-- TÍTULO
+--------------------------------------------------
+
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 60)
+title.BackgroundTransparency = 1
+title.Text = "Clasher V7"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.Font = Enum.Font.GothamBold
+title.TextSize = 36
+title.ZIndex = 2
+title.Parent = container
+
+--------------------------------------------------
+-- TEXTO
+--------------------------------------------------
+
+local info = Instance.new("TextLabel")
+info.Size = UDim2.new(1, -40, 0, 50)
+info.Position = UDim2.new(0, 20, 0, 80)
+info.BackgroundTransparency = 1
+info.Text = "Entre no grupo para pegar sua Key"
+info.TextColor3 = Color3.fromRGB(200, 200, 200)
+info.Font = Enum.Font.Gotham
+info.TextWrapped = true
+info.TextSize = 18
+info.ZIndex = 2
+info.Parent = container
+
+--------------------------------------------------
+-- INPUT
+--------------------------------------------------
+
+local keyBox = Instance.new("TextBox")
+keyBox.Size = UDim2.new(1, -40, 0, 45)
+keyBox.Position = UDim2.new(0, 20, 0, 150)
+keyBox.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+keyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+keyBox.PlaceholderText = "Coloque sua Key aqui"
+keyBox.Font = Enum.Font.Gotham
+keyBox.TextSize = 16
+keyBox.ClearTextOnFocus = false
+keyBox.ZIndex = 2
+keyBox.Parent = container
+
+local keyCorner = Instance.new("UICorner")
+keyCorner.CornerRadius = UDim.new(0, 8)
+keyCorner.Parent = keyBox
+
+--------------------------------------------------
+-- BOTÃO
+--------------------------------------------------
+
+local keyButton = Instance.new("TextButton")
+keyButton.Size = UDim2.new(1, -40, 0, 45)
+keyButton.Position = UDim2.new(0, 20, 0, 210)
+keyButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+keyButton.Text = "Pegue sua Key"
+keyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+keyButton.Font = Enum.Font.GothamBold
+keyButton.TextSize = 16
+keyButton.ZIndex = 2
+keyButton.Parent = container
+
+local buttonCorner = Instance.new("UICorner")
+buttonCorner.CornerRadius = UDim.new(0, 8)
+buttonCorner.Parent = keyButton
+
+--------------------------------------------------
+-- 🔔 AVISO ANIMADO
+--------------------------------------------------
+
+local toast = Instance.new("TextLabel")
+toast.Size = UDim2.new(0, 260, 0, 40)
+toast.Position = UDim2.new(0.5, -130, 0.75, 0)
+toast.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+toast.Text = "🔗 O link foi copiado"
+toast.TextColor3 = Color3.fromRGB(255, 255, 255)
+toast.Font = Enum.Font.GothamBold
+toast.TextSize = 16
+toast.BackgroundTransparency = 1
+toast.TextTransparency = 1
+toast.ZIndex = 3
+toast.Parent = background
+
+local toastCorner = Instance.new("UICorner")
+toastCorner.CornerRadius = UDim.new(0, 10)
+toastCorner.Parent = toast
+
+--------------------------------------------------
+-- AÇÃO DO BOTÃO
+--------------------------------------------------
+
+keyButton.MouseButton1Click:Connect(function()
+	-- Copiar link
+	pcall(function()
+		GuiService:SetClipboard(GROUP_LINK)
+	end)
+
+	-- Animação aparecer
+	local show = TweenService:Create(
+		toast,
+		TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+		{
+			BackgroundTransparency = 0,
+			TextTransparency = 0
+		}
+	)
+	show:Play()
+
+	task.delay(2, function()
+		local hide = TweenService:Create(
+			toast,
+			TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
+			{
+				BackgroundTransparency = 1,
+				TextTransparency = 1
+			}
+		)
+		hide:Play()
+	end)
+end)
